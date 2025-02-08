@@ -64,10 +64,12 @@ export async function GET(event: RequestEvent): Promise<Response> {
         tokenCookie += " Secure";
     }
 
-    const resp: APIResponse<string> = {
+    const resp: APIResponse<object> = {
         success: 1,
         error: 0,
-        message: "Session verified!",
+        message: {
+            address: payload.address,
+        },
     };
 
     return json(resp, {

@@ -1,58 +1,86 @@
 <script lang="ts">
-    import { ethers } from 'ethers';
+    import { ethers } from "ethers";
+    import { onMount } from "svelte";
+    import { VerifyAuth } from "$lib/helpers/auth";
+    import LogoutBtn from "./LogoutBtn.svelte";
+    import { userAddress, isConnected } from "$lib/stores/authStore";
 
-    export let account: string | null = null;
-    let errorMessage: string | null = null;
-    let isConnected = false;
+    let provider: ethers.providers.Web3Provider | null = null;
+    let nonce: string = "";
+    let signature: string = "";
 
-    const connectWallet = async () => {
-    if (typeof window.ethereum !== 'undefined') {
-        try {
-            const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-            account = accounts[0];
-            isConnected = true;
-            errorMessage = null;
+    // Function to connect to the user's wallet
+    async function connectWallet() {
+        if (window.ethereum) {
+            provider = new ethers.BrowserProvider(window.ethereum);
+            //            provider = new ethers.providers.Web3Provider(window.ethereum);
+            await provider.send("eth_requestAccounts", []);
+            const signer = await provider.getSigner();
+            userAddress.set(await signer.getAddress());
+            nonce = generateNonce();
+            await signNonce(signer, nonce);
+        } else {
+            alert("Please install MetaMask!");
+        }
+    }
 
-            // Generate a unique message
-            const nonce = Math.floor(Math.random() * 1000000).toString(); // Example nonce
-            const message = `Sign this message to log in: ${nonce}`;
+    // Function to generate a nonce
+    function generateNonce() {
+        return Math.random().toString(36).substring(2, 15); // Simple nonce generation
+    }
 
-            // Request the user to sign the message
-            const provider = new ethers.providers.Web3Provider(window.ethereum);
-            const signer = provider.getSigner();
-            const signature = await signer.signMessage(message);
+    // Function to sign the nonce
+    async function signNonce(signer: ethers.Signer, nonce: string) {
+        signature = await signer.signMessage(nonce);
+        await sendLoginRequest($userAddress, signature, nonce);
+    }
 
-            // Send the wallet address, nonce, and signature to the backend
-            const response = await fetch('/api/register', {
-                method: 'POST',
+    // Function to send the login request
+    async function sendLoginRequest(
+        address: string | null,
+        signature: string,
+        nonce: string,
+    ) {
+        if (address) {
+            const response = await fetch("/api/login", {
+                method: "POST",
                 headers: {
-                'Content-Type': 'application/json',
+                    "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ address: account, nonce, signature }),
+                body: JSON.stringify({
+                    address,
+                    signature,
+                    nonce,
+                }),
             });
 
-            if (!response.ok) {
-                throw new Error('Failed to save user');
-            }
-
             const data = await response.json();
-            console.log(data); // Handle the response as needed
-        } catch (error) {
-            console.error(error);
-            errorMessage = 'Failed to connect wallet or sign message';
+            console.log("Login response:", data);
+            isConnected.set(response.status == 200);
         }
-    } else {
-        errorMessage = 'Please install MetaMask!';
     }
-    };
+
+    onMount(async () => {
+        const verified = await VerifyAuth();
+
+        if (!verified) {
+            return;
+        }
+
+        isConnected.set(true);
+        userAddress.set(verified.address);
+    });
 </script>
 
-<button 
-    class="px-4 py-2 bg-secondary text-black rounded hover:bg-secondary-dark" 
-    on:click={connectWallet}>
-    {#if isConnected}
-        Connected: {account}
+<div>
+    {#if $isConnected}
+        Connected: {$userAddress}
+        <LogoutBtn />
     {:else}
-        Connect Wallet
+        <button
+            class="px-4 py-2 bg-secondary text-black rounded hover:bg-secondary-dark"
+            on:click={connectWallet}>Connect Wallet</button
+        >
     {/if}
-</button>
+</div>
+
