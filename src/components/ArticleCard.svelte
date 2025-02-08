@@ -1,48 +1,104 @@
 <script>
     import Header from "./Header.svelte";
-    import { ThumbsUp, ThumbsDown } from "lucide-svelte";
+    import { ThumbsUp, ThumbsDown, Newspaper } from "lucide-svelte";
     //import { ReadMoreButton } from "./ReadMoreButton.svelte";
   
     export let cid;
     export let title;
     export let blurb;
     export let author;
-  
-    // let voteCount = votes;
-    // function upvote() {
-    //   voteCount += 1;
-    // }
-    // function downvote() {
-    //   voteCount -= 1;
-    // }
-  </script>
-  
-  <div class="bg-purple-600 text-white shadow-lg hover:shadow-xl transition-shadow duration-300 rounded-lg p-6 max-w-sm w-full">
-    <!-- Card Header -->
-    <div class="card-header">
-      <h2 class="text-2xl font-semibold leading-tight">{title}</h2>
-    </div>
+    export let date = new Date().toISOString();
+    export let category = "News";
     
-    <!-- Card Body (blurb and author) -->
-    <div class="text-purple-100 mt-4">
-      <p class="text-sm">{blurb}</p>
-      <p class="mt-2 text-xs">By: <span class="font-medium">{author}</span></p>
-    </div>
+    let voteCount = 0;
     
-    <!-- Card Footer (read more link) -->
-    <div class="card-footer flex justify-between items-center mt-4">
-      <a href={`/article/${cid}`} class="px-4 py-2 bg-white text-purple-600 rounded-md hover:bg-purple-100 transition-colors duration-300 ml-auto">
-        Read More
-      </a>
+    function upvote() {
+      voteCount += 1;
+    }
+    
+    function downvote() {
+      voteCount -= 1;
+    }
+</script>
+  
+<div class="relative bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden max-w-sm flex flex-col">
+    <div class="p-6 flex flex-col flex-grow">
+        <!-- Category tag -->
+        <span class="inline-flex px-3 py-1 text-xs font-medium bg-purple-100 text-purple-600 rounded-full mb-4 w-auto">
+            {category}
+        </span>
 
-      <!-- <div class="flex items-center space-x-2">
-        <button class="p-2 rounded-full hover:bg-gray-200" on:click={upvote}>
-          <ThumbsUp class="h-4 w-4" />
-        </button>
-        <span>{votes}</span>
-        <button class="p-2 rounded-full hover:bg-gray-200" on:click={downvote}>
-          <ThumbsDown class="h-4 w-4" />
-        </button>
-      </div> -->
+        <!-- Title -->
+        <h2 class="text-xl font-bold text-gray-900  mb-3 line-clamp-2 hover:text-purple-600 transition-colors">
+            {title}
+        </h2>
+
+        <!-- Blurb -->
+        <p class="flex-grow text-gray-600 text-sm mb-4 line-clamp-3">
+            {blurb}
+        </p>
+
+        <!-- Author and date section -->
+        <div class="flex-grow ">
+            <!-- Author info -->
+            <div class="flex-1">
+                <div class="relative group">
+                    <div
+                        class="w-10 h-10 bg-purple-200 rounded-full cursor-pointer flex items-center justify-center text-purple-600 font-bold"
+                    >
+                        {author.slice(0, 2)}
+                    </div>
+                    <div
+                        class="absolute mt-2 py-2 w-auto bg-white rounded-md shadow-xl z-20 hidden group-hover:block left-1/2 -translate-x-1/2"
+                    >
+                        <p
+                            class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        >
+                            {author}
+                        </p>
+                    </div>
+                </div>
+                <div class="text-xs text-gray-500">
+                    {new Date(date).toLocaleDateString()}
+                </div>
+            </div>
+        </div>
+
+        <div class="flex items-center justify-between gap-4 mt-auto">
+            <div class="flex items-center gap-2 bg-gray-100 rounded-lg px-3 py-1">
+                <button 
+                    class="p-1 hover:bg-gray-200 rounded-full transition-colors"
+                    on:click={upvote}
+                >
+                    <ThumbsUp class="h-4 w-4 text-gray-600 " />
+                </button>
+                <span class="text-sm font-medium text-gray-600 min-w-[2rem] text-center">
+                    {voteCount}
+                </span>
+                <button 
+                    class="p-1 hover:bg-gray-200-gray-600 rounded-full transition-colors"
+                    on:click={downvote}
+                >
+                    <ThumbsDown class="h-4 w-4 text-gray-600" />
+                </button>
+            </div>
+                      
+            <a href={`/article/${cid}`} class="inline-flex items-center justify-center w-full px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors duration-300 group">
+                    Read More
+                <svg
+                    class="w-4 h-4 ml-2 transform group-hover:translate-x-1 transition-transform duration-300"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M13 7l5 5m0 0l-5 5m5-5H6"
+                    />
+                </svg>
+            </a>
+        </div>
     </div>
-  </div>
+</div>

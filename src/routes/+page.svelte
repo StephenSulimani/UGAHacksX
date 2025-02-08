@@ -18,7 +18,7 @@
 </script>
 
 <Header />
-<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6 p-4 mx-auto max-w-screen-lg">
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 p-4 mx-auto max-w-screen-lg">
     {#each full_articles as article}
         <ArticleCard
             cid={article.cid}
