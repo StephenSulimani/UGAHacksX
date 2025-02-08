@@ -4,14 +4,20 @@
     import LogoutBtn from "./LogoutBtn.svelte";
     import HomeBtn from "./HomeBtn.svelte";
     import { onMount } from "svelte";
+    import { goto } from "$app/navigation";
     onMount(async () => {
         await CheckAuth();
     });
+
+    function homepage() {
+        goto("/");
+        return;
+    }
 </script>
 
 <header class="bg-purple-600 text-white p-4">
     <div class="container mx-auto flex justify-between items-center">
-        <h1 class="text-2xl font-bold">Fiesta</h1>
+        <h1 class="text-2xl font-bold"><button onclick={homepage}>Fiesta</button></h1>
         {#if $isConnected}
             <div class="relative group">
                 <div

@@ -53,6 +53,28 @@ export async function GET(event: RequestEvent): Promise<Response> {
         });
     }
 
+    if (db_article.originalId != null) {
+        const prev_article = await prisma.article.findFirst({
+            where: {
+                id: db_article.originalId,
+            },
+        });
+        if (prev_article) {
+            article.prevCID = prev_article.cid;
+        }
+    }
+
+    if (db_article.nextId != null) {
+        const next_article = await prisma.article.findFirst({
+            where: {
+                id: db_article.nextId,
+            },
+        });
+        if (next_article) {
+            article.nextCID = next_article.cid;
+        }
+    }
+
     console.log(article);
 
     const resp: APIResponse<object> = {
@@ -166,18 +188,18 @@ export async function PATCH(event: RequestEvent): Promise<Response> {
             data: {
                 cid: upload.IpfsHash,
                 userId: user.id,
-                originalId: original_article.id
+                originalId: original_article.id,
             },
         });
 
         await prisma.article.update({
             where: {
-                id: original_article.id
+                id: original_article.id,
             },
-            data : {
-                nextId: db_file.id
-            }
-        })
+            data: {
+                nextId: db_file.id,
+            },
+        });
 
         if (db_file !== null) {
             const resp: APIResponse<object> = {

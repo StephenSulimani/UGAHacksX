@@ -4,6 +4,8 @@ export interface Article {
     date?: string;
     blurb: string;
     text: string;
+    nextCID?: string;
+    prevCID?: string;
 }
 
 export function isArticle(data: unknown): data is Article {
