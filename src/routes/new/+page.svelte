@@ -45,7 +45,6 @@
                 category: category,
                 blurb: description,
                 text: content,
-                category: category,
             }),
         });
 
