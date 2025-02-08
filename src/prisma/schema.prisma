@@ -11,14 +11,17 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mongodb"
   url      = env("DATABASE_URL")
 }
 
 model User {
-  id String @id @default(uuid())
-  firstName String
-  lastName String
-  email String @unique
-  password String
+  address String @id @map("_id") @db.ObjectId
+  articles Article[]
+}
+
+model Article {
+    cid String @id @map("_id") @db.ObjectId
+    userAddress String @map("user_address") @db.ObjectId
+    user User? @relation(fields: [userAddress], references: [address])
 }
