@@ -10,14 +10,44 @@
     export let date = new Date().toISOString();
     export let category = "News";
     
-    let voteCount = 0;
+    export let voteCount = 0;
     
-    function upvote() {
-      voteCount += 1;
-    }
+    let userVote = 0;
+
+    // function upvote() {
+    //   voteCount += 1;
+    // }
     
-    function downvote() {
-      voteCount -= 1;
+    // function downvote() {
+    //   voteCount -= 1;
+    // }
+
+    async function vote(voteValue) {
+        try {
+            const response = await fetch(`/api/vote/${cid}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    cid,
+                    vote: voteValue,
+                }),
+            });
+
+            const data = await response.json();
+            if (data.success) {
+                if (userVote === voteValue) {
+                    userVote = 0;
+                    voteCount -= voteValue;
+                } else {
+                    voteCount += voteValue - userVote;
+                    userVote = voteValue;
+                }
+            }
+        } catch (error) {
+            console.error(error);
+        }
     }
 </script>
   
