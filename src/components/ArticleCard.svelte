@@ -24,7 +24,7 @@
 
     async function vote(voteValue) {
         try {
-            const response = await fetch(`/api/vote/${cid}`, {
+            const response = await fetch(`../route/api/vote/${cid}`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -98,7 +98,7 @@
             <div class="flex items-center gap-2 bg-gray-100 rounded-lg px-3 py-1">
                 <button 
                     class="p-1 hover:bg-gray-200 rounded-full transition-colors"
-                    on:click={upvote}
+                    on:click={() => vote(1)}
                 >
                     <ThumbsUp class="h-4 w-4 text-gray-600 " />
                 </button>
@@ -107,7 +107,7 @@
                 </span>
                 <button 
                     class="p-1 hover:bg-gray-200-gray-600 rounded-full transition-colors"
-                    on:click={downvote}
+                    on:click={() => vote(-1)}
                 >
                     <ThumbsDown class="h-4 w-4 text-gray-600" />
                 </button>
