@@ -1,7 +1,7 @@
 <script>
   import Header from "./Header.svelte";
   import { ThumbsUp, ThumbsDown } from "lucide-svelte";
-  import { ReadMoreButton } from "./ReadMoreButton.svelte";
+  //import { ReadMoreButton } from "./ReadMoreButton.svelte";
 
   export let id;
   export let title;

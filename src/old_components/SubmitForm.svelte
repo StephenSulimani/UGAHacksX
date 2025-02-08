@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import Home from "./HomeButton.svelte";
+  //import Home from "./HomeButton.svelte";
 
   let title: string = "";
   let author: string = "";
