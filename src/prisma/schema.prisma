@@ -22,8 +22,9 @@ model User {
 }
 
 model Article {
-    id     String @id @default(auto()) @map("_id") @db.ObjectId
-    cid    String
-    userId String @map("user_id") @db.ObjectId
-    user   User?  @relation(fields: [userId], references: [id])
+    id        String   @id @default(auto()) @map("_id") @db.ObjectId
+    cid       String
+    createdAt DateTime @default(now())
+    userId    String   @map("user_id") @db.ObjectId
+    user      User?    @relation(fields: [userId], references: [id])
 }
