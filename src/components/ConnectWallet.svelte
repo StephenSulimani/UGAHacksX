@@ -51,7 +51,7 @@
     class="px-4 py-2 bg-secondary text-black rounded hover:bg-secondary-dark" 
     on:click={connectWallet}>
     {#if isConnected}
-        Connected: {account}
+        Connected
     {:else}
         Connect Wallet
     {/if}
