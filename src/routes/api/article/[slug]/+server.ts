@@ -189,7 +189,7 @@ export async function PATCH(event: RequestEvent): Promise<Response> {
                 cid: upload.IpfsHash,
                 userId: user.id,
                 originalId: original_article.id,
-                categoryId: original_article.categoryId
+                categoryId: original_article.categoryId,
             },
         });
 

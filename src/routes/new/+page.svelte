@@ -146,7 +146,7 @@
                         >Category:</label
                     >
 
-                    <select value={category}>
+                    <select bind:value={category}>
                         {#each categories as cat}
                             <option value={cat}>
                                 {cat}
