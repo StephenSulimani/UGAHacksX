@@ -1,8 +1,12 @@
 <script>
     import ConnectBtn from "./ConnectBtn.svelte";
-    import { isConnected, userAddress } from "$lib/stores/authStore";
+    import { isConnected, userAddress, CheckAuth } from "$lib/stores/authStore";
     import LogoutBtn from "./LogoutBtn.svelte";
     import HomeBtn from "./HomeBtn.svelte";
+    import { onMount } from "svelte";
+    onMount(async () => {
+        await CheckAuth();
+    });
 </script>
 
 <header class="bg-purple-600 text-white p-4">
@@ -25,7 +29,11 @@
                     </p>
                 </div>
             </div>
-            <a href="/new" class="bg-purple-400 text-white px-4 py-2 rounded-full font-semibold hover:bg-purple-500 transition-colors duration-200 shadow-md">Create Article</a>
+            <a
+                href="/new"
+                class="bg-purple-400 text-white px-4 py-2 rounded-full font-semibold hover:bg-purple-500 transition-colors duration-200 shadow-md"
+                >Create Article</a
+            >
             <LogoutBtn />
         {:else}
             <ConnectBtn />
