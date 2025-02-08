@@ -4,7 +4,14 @@
     import { goto } from "$app/navigation";
     import { onMount } from "svelte";
 
-    onMount(() => {
+    let categories = [];
+    onMount(async () => {
+        const resp = await fetch("/api/categories");
+        if (resp.status == 200) {
+            const data = await resp.json();
+
+            categories = data.message.categories;
+        }
         isConnected.subscribe((connected) => {
             if (!connected) {
                 goto("/");
@@ -17,6 +24,7 @@
     let description = "";
     let content = "";
     let contentElement: HTMLTextAreaElement;
+    let category = "";
 
     let showModal = false;
     let message = "";
@@ -36,10 +44,13 @@
                 title: title,
                 blurb: description,
                 text: content,
+                category: category,
             }),
         });
 
         const data = await resp.json();
+
+        console.log(data);
 
         message = data.message.cid;
 
@@ -120,86 +131,104 @@
         </div>
     </div>
 {/if}
-<div class="min-h-screen flex items-center justify-center bg-gray-100 p-4">
-    <div class="max-w-4xl w-full bg-white shadow-lg rounded-lg p-8">
-        <h1 class="text-3xl font-bold text-center text-gray-800 mb-8">
-            Create New Article
-        </h1>
+{#if categories.length > 0}
+    <div class="min-h-screen flex items-center justify-center bg-gray-100 p-4">
+        <div class="max-w-4xl w-full bg-white shadow-lg rounded-lg p-8">
+            <h1 class="text-3xl font-bold text-center text-gray-800 mb-8">
+                Create New Article
+            </h1>
 
-        <form class="space-y-6">
-            <!-- Title Input -->
-            <div>
-                <label
-                    for="title"
-                    class="block text-lg font-medium text-gray-700"
-                    >Title:</label
-                >
-                <input
-                    type="text"
-                    id="title"
-                    bind:value={title}
-                    class="mt-2 block w-full px-5 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                    placeholder="Enter article title"
-                />
-            </div>
+            <form class="space-y-6">
+                <div>
+                    <label
+                        for="category"
+                        class="block text-lg font-medium text-gray-700"
+                        >Category:</label
+                    >
 
-            <!-- Description Input -->
-            <div>
-                <label
-                    for="description"
-                    class="block text-lg font-medium text-gray-700"
-                    >Description:</label
-                >
-                <textarea
-                    id="description"
-                    bind:value={description}
-                    class="mt-2 block w-full px-5 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                    placeholder="Enter article description"
-                ></textarea>
-            </div>
+                    <select value={category}>
+                        {#each categories as cat}
+                            <option value={cat}>
+                                {cat}
+                            </option>
+                        {/each}
+                    </select>
+                </div>
+                <!-- Title Input -->
+                <div>
+                    <label
+                        for="title"
+                        class="block text-lg font-medium text-gray-700"
+                        >Title:</label
+                    >
+                    <input
+                        type="text"
+                        id="title"
+                        bind:value={title}
+                        class="mt-2 block w-full px-5 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                        placeholder="Enter article title"
+                    />
+                </div>
 
-            <!-- Content Input -->
-            <div>
-                <label
-                    for="content"
-                    class="block text-lg font-medium text-gray-700"
-                    >Content:</label
-                >
-                <textarea
-                    id="article-content"
-                    bind:value={content}
-                    bind:this={contentElement}
-                    class="mt-2 block w-full h-72 px-5 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                    placeholder="Write your article here..."
-                    on:keydown={handleKeydown}
-                ></textarea>
-            </div>
+                <!-- Description Input -->
+                <div>
+                    <label
+                        for="description"
+                        class="block text-lg font-medium text-gray-700"
+                        >Description:</label
+                    >
+                    <textarea
+                        id="description"
+                        bind:value={description}
+                        class="mt-2 block w-full px-5 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                        placeholder="Enter article description"
+                    ></textarea>
+                </div>
 
-            <!-- Description of Shortcuts -->
-            <div class="text-sm text-gray-500 mt-2">
-                <p class="text-center">
-                    You can use <span class="font-semibold">CTRL + i</span> for
-                    <i>italics</i>
-                    , <span class="font-semibold">CTRL + b</span> for
-                    <b>bold</b> text, and
-                    <span class="font-semibold">CTRL + u</span>
-                    for <u>underlined</u> text.
-                </p>
-            </div>
+                <!-- Content Input -->
+                <div>
+                    <label
+                        for="content"
+                        class="block text-lg font-medium text-gray-700"
+                        >Content:</label
+                    >
+                    <textarea
+                        id="article-content"
+                        bind:value={content}
+                        bind:this={contentElement}
+                        class="mt-2 block w-full h-72 px-5 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                        placeholder="Write your article here..."
+                        on:keydown={handleKeydown}
+                    ></textarea>
+                </div>
 
-            <!-- Submit Button -->
-            <div class="mt-6">
-                <button
-                    on:click={createArticle}
-                    type="submit"
-                    class="w-full py-3 px-5 bg-indigo-600 text-white font-semibold rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50"
-                >
-                    Create Article
-                </button>
-            </div>
-        </form>
+                <!-- Description of Shortcuts -->
+                <div class="text-sm text-gray-500 mt-2">
+                    <p class="text-center">
+                        You can use <span class="font-semibold">CTRL + i</span>
+                        for
+                        <i>italics</i>
+                        , <span class="font-semibold">CTRL + b</span> for
+                        <b>bold</b> text, and
+                        <span class="font-semibold">CTRL + u</span>
+                        for <u>underlined</u> text.
+                    </p>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="mt-6">
+                    <button
+                        on:click={createArticle}
+                        type="submit"
+                        class="w-full py-3 px-5 bg-indigo-600 text-white font-semibold rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-50"
+                    >
+                        Create Article
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
-</div>
+{/if}
 
 <style>
     /* You can add custom styles here if needed */

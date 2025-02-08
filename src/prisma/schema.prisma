@@ -36,6 +36,9 @@ model Article {
     nextId     String?   @db.ObjectId
     Comment    Comment[]
     Vote       Vote[]
+
+    categoryId String   @map("category_id") @db.ObjectId
+    category   Category @relation(fields: [categoryId], references: [id])
 }
 
 model Comment {
@@ -54,4 +57,10 @@ model Vote {
     articleId String  @map("article_id") @db.ObjectId
     article   Article @relation(fields: [articleId], references: [id])
     score     Int
+}
+
+model Category {
+    id       String    @id @default(auto()) @map("_id") @db.ObjectId
+    name     String    @unique
+    articles Article[]
 }
