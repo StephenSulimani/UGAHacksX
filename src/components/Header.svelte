@@ -2,7 +2,6 @@
   import Header from "./Header.svelte";
   import { ThumbsUp, ThumbsDown } from "lucide-svelte";
   import ConnectWalletButton from "./ConnectWallet.svelte";
-  import SubmitForm from "./SubmitForm.svelte";
     
   export let id;
   export let title;
