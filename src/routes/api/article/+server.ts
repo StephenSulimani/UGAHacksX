@@ -61,7 +61,24 @@ export async function POST(event: RequestEvent): Promise<Response> {
         const resp: APIResponse<string> = {
             success: 0,
             error: 1,
-            message: "title, data, blurb, & text parameters are all required!",
+            message: "title, blurb, text, & category parameters are all required!",
+        };
+        return json(resp, {
+            status: 400,
+        });
+    }
+
+    const found_category = await prisma.category.findFirst({
+        where: {
+            name: data.category,
+        },
+    });
+
+    if (!found_category) {
+        const resp: APIResponse<string> = {
+            success: 0,
+            error: 1,
+            message: "Invalid category name!",
         };
         return json(resp, {
             status: 400,
@@ -85,6 +102,7 @@ export async function POST(event: RequestEvent): Promise<Response> {
             data: {
                 cid: upload.IpfsHash,
                 userId: user.id,
+                categoryId: found_category.id,
             },
         });
 
