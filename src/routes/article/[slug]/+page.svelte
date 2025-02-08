@@ -1,4 +1,5 @@
 <script lang="ts">
+    import DOMPurify from "dompurify";
     import type { PageProps } from "./$types";
     let { data }: PageProps = $props();
     import { isConnected, userAddress } from "$lib/stores/authStore";
@@ -24,7 +25,8 @@
 
     let title = $state(article.title);
     let description = $state(article.blurb);
-    let content = $state(article.text);
+    let content = $state(DOMPurify.sanitize(article.text));
+
     let contentElement: HTMLTextAreaElement | undefined = $state();
 
     let showModal = $state(false);
@@ -129,16 +131,16 @@
 
             <!-- Body -->
             <div class="mt-6 space-y-4 text-lg text-gray-700">
-                <p>{article.text}</p>
+                <p>{@html article.text}</p>
             </div>
             <div class="flex justify-between p-4">
                 <!-- Back button -->
                 {#if article.prevCID}
                     <button
                         onclick={() => {
-                            console.log("going");
-                            window.location = `/article/${article.prevCID}`;
                             invalidateAll();
+                            goto(`/article/${article.prevCID}`);
+                            //                            window.location = `/article/${article.prevCID}`;
                         }}
                         class="flex items-center bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-400 transition duration-300"
                     >

@@ -19,6 +19,8 @@ model User {
     id       String    @id @default(auto()) @map("_id") @db.ObjectId
     address  String
     articles Article[]
+    comments Comment[]
+    votes    Vote[]
 }
 
 model Article {
@@ -32,4 +34,24 @@ model Article {
     originalId String?   @db.ObjectId
     original   Article?  @relation("ArticleVersions", fields: [originalId], references: [id], onDelete: NoAction, onUpdate: NoAction)
     nextId     String?   @db.ObjectId
+    Comment    Comment[]
+    Vote       Vote[]
+}
+
+model Comment {
+    id        String  @id @default(auto()) @map("_id") @db.ObjectId
+    userId    String  @map("user_id") @db.ObjectId
+    user      User    @relation(fields: [userId], references: [id])
+    articleId String  @map("article_id") @db.ObjectId
+    article   Article @relation(fields: [articleId], references: [id])
+    message   String
+}
+
+model Vote {
+    id        String  @id @default(auto()) @map("_id") @db.ObjectId
+    userId    String  @map("user_id") @db.ObjectId
+    user      User    @relation(fields: [userId], references: [id])
+    articleId String  @map("article_id") @db.ObjectId
+    article   Article @relation(fields: [articleId], references: [id])
+    score     Int
 }
