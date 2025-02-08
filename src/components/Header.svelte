@@ -1,64 +1,34 @@
-<script lang="ts">
-  import Header from "./Header.svelte";
-  import { ThumbsUp, ThumbsDown } from "lucide-svelte";
-  import ConnectWalletButton from "./ConnectWallet.svelte";
-    
-  export let id;
-  export let title;
-  export let excerpt;
-  export let author;
-  export let votes = 0;
-
-  let account: string | null = null;
-  let errorMessage: string | null = null;
-
-  let voteCount = votes;
-  function upvote() {
-    voteCount += 1;
-  }
-  function downvote() {
-    voteCount -=1;
-  }
-
+<script>
+    import ConnectBtn from "./ConnectBtn.svelte";
+    import { isConnected, userAddress } from "$lib/stores/authStore";
+    import LogoutBtn from "./LogoutBtn.svelte";
+    import HomeBtn from "./HomeBtn.svelte";
 </script>
 
-<header class="bg-primary text-primary-foreground">
-  <div class="container mx-auto px-4 py-4 flex justify-between items-center">
-    <a href="/" class="text-2xl font-bold">DecentralNews</a>
-    <nav>
-      <ul class="flex space-x-4">
-        <li>
-          <a href="/articles" class="hover:underline">Articles</a>
-        </li>
-        <li>
-          <a href="/submit" class="hover:underline">Submit</a>
-        </li>
-        <li>
-          <ConnectWalletButton />
-        </li>
-      </ul>
-    </nav>
-  </div>
-</header>
-
-<div class="card p-6 border rounded-lg shadow-lg bg-white">
-  <div class="card-header mb-2">
-    <h2 class="card-title text-xl font-bold text-gray-900">{title}</h2>
-  </div>
-  <div class="card-content">
-    <p class="text-gray-700">{excerpt}</p>
-    <p class="mt-2 text-sm text-gray-500">By: {author}</p>
-  </div>
-  <div class="card-footer flex justify-between mt-4">
-    <a href={`/article/${id}`} class="px-4 py-2 border rounded text-blue-600 hover:bg-blue-100">Read More</a>
-    <div class="flex items-center space-x-2">
-      <button class="p-2 rounded-full bg-gray-100 hover:bg-gray-200" on:click={upvote}>
-        <ThumbsUp class="h-5 w-5 text-green-500" />
-      </button>
-      <span class="text-gray-800 font-medium">{voteCount}</span>
-      <button class="p-2 rounded-full bg-gray-100 hover:bg-gray-200" on:click={downvote}>
-        <ThumbsDown class="h-5 w-5 text-red-500" />
-      </button>
+<header class="bg-purple-600 text-white p-4">
+    <div class="container mx-auto flex justify-between items-center">
+        <h1 class="text-2xl font-bold">Fiesta</h1>
+        {#if $isConnected}
+            <div class="relative group">
+                <div
+                    class="w-10 h-10 bg-white rounded-full cursor-pointer flex items-center justify-center text-purple-600 font-bold"
+                >
+                    {$userAddress.slice(0, 2)}
+                </div>
+                <div
+                    class="absolute mt-2 py-2 w-auto bg-white rounded-md shadow-xl z-20 hidden group-hover:block left-1/2 -translate-x-1/2"
+                >
+                    <p
+                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    >
+                        {$userAddress}
+                    </p>
+                </div>
+            </div>
+            <a href="/new" class="bg-purple-400 text-white px-4 py-2 rounded-full font-semibold hover:bg-purple-500 transition-colors duration-200 shadow-md">Create Article</a>
+            <LogoutBtn />
+        {:else}
+            <ConnectBtn />
+        {/if}
     </div>
-  </div>
-</div>
+</header>

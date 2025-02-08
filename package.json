@@ -46,10 +46,10 @@
         "bcryptjs": "^2.4.3",
         "ethers": "^6.13.5",
         "jose": "^5.9.6",
+        "lucide-svelte": "^0.475.0",
         "node-gzip": "^1.1.2",
         "pinata-web3": "^0.5.4",
-        "lucide-svelte": "^0.475.0",
-        "prisma": "^6.2.1"
+        "prisma": "6.2.1"
     },
     "prisma": {
         "schema": "src/prisma/schema.prisma"

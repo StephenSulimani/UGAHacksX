@@ -84,7 +84,7 @@ export async function POST(event: RequestEvent): Promise<Response> {
         const db_file = await prisma.article.create({
             data: {
                 cid: upload.IpfsHash,
-                userAddress: user.address,
+                userId: user.id,
             },
         });
 
@@ -109,7 +109,8 @@ export async function POST(event: RequestEvent): Promise<Response> {
         return json(resp, {
             status: 500,
         });
-    } catch {
+    } catch (e) {
+        console.log(e);
         const resp: APIResponse<string> = {
             success: 0,
             error: 1,

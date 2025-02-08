@@ -23,7 +23,7 @@ function isRegisterRequest(data: unknown): data is RegisterRequest {
 export async function POST(event: RequestEvent): Promise<Response> {
     const { request } = event;
 
-    const data = request.json();
+    const data = await request.json();
 
     if (!isRegisterRequest(data)) {
         const resp: APIResponse<string> = {
@@ -34,10 +34,13 @@ export async function POST(event: RequestEvent): Promise<Response> {
         return json(resp, { status: 400 });
     }
 
-    const message = `Please sign: ${data.nonce}`;
+    const message = `${data.nonce}`;
 
     try {
         const signerAddress = verifyMessage(message, data.signature);
+
+        console.log(`Signer Address: ${signerAddress}`);
+        console.log(`Data Address: ${data.address}`);
 
         if (signerAddress.toLowerCase() !== data.address.toLowerCase()) {
             // Signature Verification Failed!
@@ -116,7 +119,8 @@ export async function POST(event: RequestEvent): Promise<Response> {
                     "Set-Cookie": tokenCookie,
                 },
             });
-        } catch {
+        } catch (e) {
+            console.log(e);
             // DB Creation Error
             const resp: APIResponse<string> = {
                 success: 0,
@@ -125,7 +129,8 @@ export async function POST(event: RequestEvent): Promise<Response> {
             };
             return json(resp, { status: 500 });
         }
-    } catch {
+    } catch (e) {
+        console.log(e);
         // Signature Verification Failed!
         const resp: APIResponse<string> = {
             success: 0,
