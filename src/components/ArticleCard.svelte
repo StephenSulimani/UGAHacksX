@@ -8,7 +8,7 @@
     export let blurb;
     export let author;
     export let date = new Date().toISOString();
-    export let category = "News";
+    export let category;
     
     export let voteCount = 0;
     

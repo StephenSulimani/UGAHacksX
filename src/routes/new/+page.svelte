@@ -15,6 +15,7 @@
 
     let title = "";
     let description = "";
+    let category = "";
     let content = "";
     let contentElement: HTMLTextAreaElement;
 
@@ -34,6 +35,7 @@
             },
             body: JSON.stringify({
                 title: title,
+                category: category,
                 blurb: description,
                 text: content,
             }),
@@ -140,6 +142,22 @@
                     bind:value={title}
                     class="mt-2 block w-full px-5 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                     placeholder="Enter article title"
+                />
+            </div>
+
+            <!-- Category Input -->
+            <div>
+                <label
+                    for="category"
+                    class="block text-lg font-medium text-gray-700"
+                    >Category:</label
+                >
+                <input
+                    type="text"
+                    id="category"
+                    bind:value={category}
+                    class="mt-2 block w-full px-5 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                    placeholder="Enter article category"
                 />
             </div>
 

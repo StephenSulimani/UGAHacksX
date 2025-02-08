@@ -23,6 +23,7 @@
     let date: string = new Date().toISOString().split("T")[0];
     let blurb: string = "";
     let text: string = "";
+    let category: string = "";
     let isSubmitting: boolean = false;
     let successMessage: string | null = null;
     let errorMessage: string | null = null;
@@ -34,7 +35,7 @@
         errorMessage = null;
 
         // Validate form fields
-        if (!title || !blurb || !text) {
+        if (!title || !category || !blurb || !text) {
             errorMessage = "Please fill out all fields";
             isSubmitting = false;
             return;
@@ -49,6 +50,7 @@
                 body: JSON.stringify({
                     title,
                     author,
+                    category,
                     date,
                     blurb,
                     text,
@@ -65,6 +67,7 @@
             title = "";
             blurb = "";
             text = "";
+            category = "";
         } catch (error) {
             console.error(error);
             errorMessage = "Failed to submit article";
@@ -74,14 +77,14 @@
     };
 </script>
 
-<Header id="" title="" author="" excerpt="" />
+<Header id="" title="" author="" excerpt="" category=""/>
 <form
     on:submit={handleSubmit}
     class="p-4 border rounded-md shadow-md max-w-md mx-auto"
 >
     <h2 class="text-xl font-semibold mb-4">Submit Your Information</h2>
 
-    <!-- Name Input -->
+    <!-- Title Input -->
     <div class="mb-4">
         <label for="title" class="block text-sm font-medium text-gray-700"
             >Title</label
@@ -95,7 +98,20 @@
         />
     </div>
 
-    <!-- Email Input -->
+    <!--Category Input-->
+    <div class="mb-4">
+        <label for="category" class="block text-sm font-medium text-gray-700"
+            >Category</label
+        >
+        <input
+            type="text"
+            id="category"
+            bind:value={category}
+            class="mt-1 p-2 border rounded w-full"
+            required
+        />
+
+    <!-- Blurb Input -->
     <div class="mb-4">
         <label for="blurb" class="block text-sm font-medium text-gray-700"
             >blurb</label
