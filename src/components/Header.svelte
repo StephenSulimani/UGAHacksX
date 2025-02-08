@@ -2,6 +2,7 @@
     import ConnectBtn from "./ConnectBtn.svelte";
     import { isConnected, userAddress } from "$lib/stores/authStore";
     import LogoutBtn from "./LogoutBtn.svelte";
+    import HomeBtn from "./HomeBtn.svelte";
 </script>
 
 <header class="bg-purple-600 text-white p-4">
