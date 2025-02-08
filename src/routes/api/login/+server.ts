@@ -1,6 +1,5 @@
 import type { APIResponse } from "$lib/responses";
-import { json } from "@sveltejs/kit";
-import type { RequestEvent } from "./$types";
+import { json, type RequestEvent } from "@sveltejs/kit";
 import { verifyMessage } from "ethers";
 import { prisma } from "$lib/db";
 import { createJWT, type AuthPayload } from "$lib/jwt";
@@ -50,7 +49,7 @@ export async function POST(event: RequestEvent): Promise<Response> {
             return json(resp, { status: 400 });
         }
 
-        const user = prisma.user.findFirst({
+        const user = await prisma.user.findFirst({
             where: {
                 address: {
                     equals: data.address.toLowerCase(),
@@ -60,12 +59,30 @@ export async function POST(event: RequestEvent): Promise<Response> {
         });
 
         if (user !== null) {
-            const resp: APIResponse<string> = {
-                success: 0,
-                error: 1,
-                message: "Address already registered!",
+            const payload: AuthPayload = {
+                address: user.address,
             };
-            return json(resp, { status: 400 });
+
+            const jwt = await createJWT(payload);
+
+            let tokenCookie = `authToken=${jwt}; HttpOnly; Path=/; Max-Age=86400;`; // Add Secure
+
+            if (process.env.NODE_ENV === "production") {
+                tokenCookie += " Secure";
+            }
+
+            const resp: APIResponse<string> = {
+                success: 1,
+                error: 0,
+                message: "Successfully logged in!",
+            };
+
+            return json(resp, {
+                status: 200,
+                headers: {
+                    "Set-Cookie": tokenCookie,
+                },
+            });
         }
 
         try {
@@ -90,7 +107,7 @@ export async function POST(event: RequestEvent): Promise<Response> {
             const resp: APIResponse<string> = {
                 success: 1,
                 error: 0,
-                message: "Address successfully registered!",
+                message: "Successfully logged in!",
             };
 
             return json(resp, {
@@ -104,7 +121,7 @@ export async function POST(event: RequestEvent): Promise<Response> {
             const resp: APIResponse<string> = {
                 success: 0,
                 error: 1,
-                message: "There was an error registering your address.",
+                message: "There was an error logging in.",
             };
             return json(resp, { status: 500 });
         }
