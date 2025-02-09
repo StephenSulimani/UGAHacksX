@@ -1,4 +1,3 @@
-// Comments.svelte
 <script lang="ts">
   import { onMount } from 'svelte';
 
@@ -23,7 +22,7 @@
   // Fetch comments
   async function fetchComments() {
     try {
-      const response = await fetch(`/api/comments/${cid}`);
+      const response = await fetch(`/api/comment/${cid}`);
       const data: APIResponse<{comments: Comment[]}> = await response.json();
       
       if (data.error) {
@@ -33,7 +32,7 @@
 
       comments = data.message.comments;
     } catch (e) {
-      error = 'Error fetching comments';
+      return;
     } finally {
       isLoading = false;
     }
@@ -44,7 +43,7 @@
     if (!newComment.trim()) return;
 
     try {
-      const response = await fetch('/api/comments', {
+      const response = await fetch('/api/comment', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

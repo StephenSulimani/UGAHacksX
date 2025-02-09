@@ -2,6 +2,7 @@
     import { onMount } from "svelte";
     import Header from "./Header.svelte";
     import { ThumbsUp, ThumbsDown, Newspaper } from "lucide-svelte";
+
     let { cid, title, blurb, author, category } = $props();
 
     let date = new Date().toISOString();
@@ -154,8 +155,4 @@
         </div>
     </div>
 
-    <!-- Comment Section -->
-    <div>
-
-    </div>
 </div>

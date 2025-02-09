@@ -6,6 +6,7 @@
     import { onMount } from "svelte";
     import { goto, invalidateAll } from "$app/navigation";
     import { VerifyAuth } from "$lib/helpers/auth";
+    import Comments from "../../../components/Comments.svelte";
 
     const article = data.full_article.article;
     const cid = data.full_article.cid;
@@ -107,7 +108,7 @@
 <Header />
 {#if article}
     {#if !editing}
-        <div class="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-lg">
+        <div class="max-w-screen mx-auto p-6 bg-white rounded-lg shadow-lg">
             <!-- Title and Edit Btn Wrapper-->
             <div class="flex justify-between items-start">
                 <h1 class="text-3xl font-bold text-gray-900">
@@ -219,6 +220,7 @@
                 </div>
             </div>
         {/if}
+        <!--Edit Article-->
         <div
             class="min-h-screen flex items-center justify-center bg-gray-100 p-4"
         >
@@ -302,7 +304,9 @@
                         </button>
                     </div>
                 </form>
+                <!-- Comment Section -->
             </div>
         </div>
     {/if}
+    <Comments {cid}/>
 {/if}
