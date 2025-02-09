@@ -14,7 +14,7 @@
     };
 </script>
 
-<form class="flex " on:submit={navigate}>
+<form class="flex" on:submit={navigate}>
     <Search bind:value={cid} size="md" />
     <Button class="!p-2.5" ></Button>
 </form>

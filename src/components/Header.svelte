@@ -20,10 +20,10 @@
     <title>StealthScribe</title>
 </svelte:head>
 
-<header class="bg-purple-600 text-white p-4 px-16">
+<header class="bg-purple-600 text-white p-4">
     <div class="container mx-auto flex justify-between items-center">
         <!--Left side: Stealth Scribe and User-->
-        <div class="flex items-center space-x-4">
+        <div class="flex items-center space-x-4 sm:space-x-3">
             <h1 class="text-2xl font-bold">
                 <button onclick={homepage}>StealthScribe</button>
             </h1>
@@ -41,14 +41,14 @@
             {/if}
         </div>
         <!--Right side: Create Article and Connect Wallet-->
-        <div class="flex items-center space-x-4">
+        <div class="flex items-center space-x-4 sm:space-x-3">
             <SearchBar />
             {#if $isConnected}
                 <a
                     href="/new"
-                    class="bg-purple-400 text-white px-4 py-2 rounded-full font-semibold hover:bg-purple-500 transition-colors duration-200 shadow-md"
-                    >Create Article</a
-                >
+                    class="bg-purple-400 text-whit sm:px-2 sm:py-2 rounded-full font-semibold hover:bg-purple-500 transition-colors duration-200 shadow-md">
+                    Create Article
+                </a>
                 <LogoutBtn />
             {:else}
                 <ConnectBtn />
