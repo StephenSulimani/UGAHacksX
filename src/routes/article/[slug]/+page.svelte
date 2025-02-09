@@ -1,7 +1,7 @@
 <script lang="ts">
     import type { PageProps } from "./$types";
     let { data }: PageProps = $props();
-    import { isConnected, userAddress } from "$lib/stores/authStore";
+    import { userAddress } from "$lib/stores/authStore";
     import Header from "../../../components/Header.svelte";
     import { goto, invalidateAll } from "$app/navigation";
     import Comments from "../../../components/Comments.svelte";
