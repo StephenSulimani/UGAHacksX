@@ -83,7 +83,7 @@
         </p>
 
         <!-- Author and date section -->
-        <div class="flex-grow mb-4">
+        <div class="flex-grow mb-4 mt-auto">
             <!-- Author info -->
             <div class="flex-1">
                 <div class="relative group">
@@ -108,7 +108,8 @@
             </div>
         </div>
 
-        <div class=" flex items-center justify-between gap-4 mt-auto">
+        <!-- Votes and Read More -->
+        <div class="mt-auto flex items-center justify-between gap-4">
             <div
                 class=" inline-flex items-center w-full gap-2 bg-gray-100 rounded-lg px-1 py-2"
             >
