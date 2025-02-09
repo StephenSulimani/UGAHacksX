@@ -3,9 +3,7 @@
     let { data }: PageProps = $props();
     import { isConnected, userAddress } from "$lib/stores/authStore";
     import Header from "../../../components/Header.svelte";
-    import { onMount } from "svelte";
     import { goto, invalidateAll } from "$app/navigation";
-    import { VerifyAuth } from "$lib/helpers/auth";
     import Comments from "../../../components/Comments.svelte";
 
     const article = data.full_article.article;
