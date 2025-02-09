@@ -83,7 +83,7 @@
         </p>
 
         <!-- Author and date section -->
-        <div class="flex-grow">
+        <div class="flex-grow mb-4">
             <!-- Author info -->
             <div class="flex-1">
                 <div class="relative group">
@@ -101,16 +101,16 @@
                             {author}
                         </p>
                     </div>
-                </div>
-                <div class="text-xs text-gray-500">
-                    {new Date(date).toLocaleDateString()}}
-                </div>
+                    <div class="text-xs text-gray-500">
+                        {new Date(date).toLocaleDateString()}
+                    </div>
+                </div> 
             </div>
         </div>
 
         <div class=" flex items-center justify-between gap-4 mt-auto">
             <div
-                class=" flex items-center gap-2 bg-gray-100 rounded-lg px-3 py-1"
+                class=" inline-flex items-center w-full gap-2 bg-gray-100 rounded-lg px-1 py-2"
             >
                 <button
                     class="p-1 hover:bg-gray-200 rounded-full transition-colors"
@@ -135,7 +135,7 @@
 
             <a
                 href={`/article/${cid}`}
-                class="inline-flex items-center justify-center w-full px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors duration-300 group"
+                class="inline-flex items-center justify-center w-full px-2 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors duration-300 group"
             >
                 Read More
                 <svg

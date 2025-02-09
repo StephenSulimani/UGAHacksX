@@ -19,7 +19,7 @@
     <title>StealthScribe</title>
 </svelte:head>
 
-<header class="bg-purple-600 text-white p-4">
+<header class="bg-purple-600 text-white p-4 px-20">
     <div class="container mx-auto flex justify-between items-center">
         <!--Left side: Stealth Scribe and User-->
         <div class="flex items-center space-x-4">
