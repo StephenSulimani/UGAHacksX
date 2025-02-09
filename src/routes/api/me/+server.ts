@@ -1,4 +1,5 @@
 import { prisma } from "$lib/db";
+import { VerifyCookie } from "$lib/helpers/verifyCookie";
 import { createJWT, verifyJWT, type AuthPayload } from "$lib/jwt";
 import type { APIResponse } from "$lib/responses";
 import { json, type RequestEvent } from "@sveltejs/kit";
@@ -6,50 +7,10 @@ import { json, type RequestEvent } from "@sveltejs/kit";
 export async function GET(event: RequestEvent): Promise<Response> {
     const { cookies } = event;
 
-    const authCookie = cookies.get("authToken");
+    const user = await VerifyCookie(cookies);
 
-    if (!authCookie) {
-        const resp: APIResponse<string> = {
-            success: 0,
-            error: 1,
-            message: "authToken missing!",
-        };
-        return json(resp, {
-            status: 400,
-        });
-    }
-
-    const verification = await verifyJWT(authCookie);
-
-    if (!verification) {
-        const resp: APIResponse<string> = {
-            success: 0,
-            error: 1,
-            message: "Invalid authToken!",
-        };
-        return json(resp, {
-            status: 400,
-        });
-    }
-
-    const user = await prisma.user.findFirst({
-        where: {
-            address: {
-                equals: verification.address,
-                mode: "insensitive",
-            },
-        },
-    });
-
-    if (user == null) {
-        const resp: APIResponse<string> = {
-            success: 0,
-            error: 1,
-            message: "Invalid authToken!",
-        };
-        return json(resp, {
-            status: 400,
-        });
+    if (user instanceof Response) {
+        return user;
     }
 
     const payload: AuthPayload = {

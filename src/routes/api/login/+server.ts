@@ -119,8 +119,7 @@ export async function POST(event: RequestEvent): Promise<Response> {
                     "Set-Cookie": tokenCookie,
                 },
             });
-        } catch (e) {
-            console.log(e);
+        } catch {
             // DB Creation Error
             const resp: APIResponse<string> = {
                 success: 0,
@@ -129,8 +128,7 @@ export async function POST(event: RequestEvent): Promise<Response> {
             };
             return json(resp, { status: 500 });
         }
-    } catch (e) {
-        console.log(e);
+    } catch {
         // Signature Verification Failed!
         const resp: APIResponse<string> = {
             success: 0,
