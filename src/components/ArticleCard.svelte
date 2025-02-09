@@ -110,7 +110,7 @@
 
         <div class=" flex items-center justify-between gap-4 mt-auto">
             <div
-                class="flex items-center gap-2 bg-gray-100 rounded-lg px-3 py-1"
+                class=" flex items-center gap-2 bg-gray-100 rounded-lg px-3 py-1"
             >
                 <button
                     class="p-1 hover:bg-gray-200 rounded-full transition-colors"
