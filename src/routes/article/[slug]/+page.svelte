@@ -25,7 +25,7 @@
 
     let title = $state(article.title);
     let description = $state(article.blurb);
-    let content = $state(article.text);
+    let content = $state(article.text.replace(/\n/g, "<br>"));
 
     let contentElement: HTMLTextAreaElement | undefined = $state();
 
@@ -132,7 +132,7 @@
 
             <!-- Body -->
             <div class="mt-6 space-y-4 text-lg text-gray-700">
-                <p>{@html article.text}</p>
+                <p>{@html content}</p>
             </div>
             <div class="flex justify-between p-4">
                 <!-- Back button -->
@@ -308,5 +308,5 @@
             </div>
         </div>
     {/if}
-    <Comments {cid}/>
+    <Comments {cid} />
 {/if}
