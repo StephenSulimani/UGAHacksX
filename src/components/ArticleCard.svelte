@@ -101,10 +101,10 @@
                             {author}
                         </p>
                     </div>
-                    <div class="text-xs text-gray-500">
-                        {new Date(date).toLocaleDateString()}
-                    </div>
-                </div> 
+                </div>
+                <div class="text-xs text-gray-500">
+                    {new Date(date).toLocaleDateString()}
+                </div>
             </div>
         </div>
 

@@ -12,7 +12,7 @@
     const cid = data.full_article.cid;
 
     let editing = $state(false);
-
+    /*
     onMount(async () => {
         await VerifyAuth();
         isConnected.subscribe((connected) => {
@@ -22,7 +22,7 @@
             }
         });
     });
-
+*/
     let title = $state(article.title);
     let description = $state(article.blurb);
     let content = $state(article.text.replace(/\n/g, "<br>"));
@@ -308,5 +308,7 @@
             </div>
         </div>
     {/if}
-    <Comments {cid} />
+    {#if !editing}
+        <Comments {cid} />
+    {/if}
 {/if}

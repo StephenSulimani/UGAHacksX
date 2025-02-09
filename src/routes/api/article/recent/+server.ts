@@ -8,7 +8,7 @@ export async function GET(): Promise<Response> {
             orderBy: {
                 createdAt: "desc",
             },
-            take: 5,
+            take: 9,
         });
 
         const article_list = articles.map((a) => a.cid);
