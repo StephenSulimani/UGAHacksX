@@ -5,6 +5,7 @@
     import HomeBtn from "./HomeBtn.svelte";
     import { onMount } from "svelte";
     import { goto } from "$app/navigation";
+    import SearchBar from "./SearchBar.svelte";
     onMount(async () => {
         await CheckAuth();
     });
@@ -19,7 +20,7 @@
     <title>StealthScribe</title>
 </svelte:head>
 
-<header class="bg-purple-600 text-white p-4 px-20">
+<header class="bg-purple-600 text-white p-4 px-16">
     <div class="container mx-auto flex justify-between items-center">
         <!--Left side: Stealth Scribe and User-->
         <div class="flex items-center space-x-4">
@@ -41,6 +42,7 @@
         </div>
         <!--Right side: Create Article and Connect Wallet-->
         <div class="flex items-center space-x-4">
+            <SearchBar />
             {#if $isConnected}
                 <a
                     href="/new"

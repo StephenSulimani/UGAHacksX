@@ -46,6 +46,8 @@
         "bcryptjs": "^2.4.3",
         "dompurify": "^3.2.4",
         "ethers": "^6.13.5",
+        "flowbite-svelte": "^0.47.4",
+        "flowbite-svelte-icons": "^2.0.2",
         "jose": "^5.9.6",
         "lucide-svelte": "^0.475.0",
         "node-gzip": "^1.1.2",
