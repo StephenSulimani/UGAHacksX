@@ -125,7 +125,7 @@
                     {voteCount} votes
                 </span>
                 <button
-                    class="p-1 hover:bg-gray-200-gray-600 rounded-full transition-colors"
+                    class="p-1 hover:bg-gray-200 rounded-full transition-colors"
                     onclick={() => vote(-1)}
                     disabled={userVote === -1}
                 >

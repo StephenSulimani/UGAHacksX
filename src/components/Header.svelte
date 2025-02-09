@@ -15,9 +15,15 @@
     }
 </script>
 
+<svelte:head>
+    <title>StealthScribe</title>
+</svelte:head>
+
 <header class="bg-purple-600 text-white p-4">
     <div class="container mx-auto flex justify-between items-center">
-        <h1 class="text-2xl font-bold"><button onclick={homepage}>Fiesta</button></h1>
+        <h1 class="text-2xl font-bold">
+            <button onclick={homepage}>StealthScribe</button>
+        </h1>
         {#if $isConnected}
             <div class="relative group">
                 <div
