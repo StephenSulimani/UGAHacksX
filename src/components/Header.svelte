@@ -46,7 +46,7 @@
             {#if $isConnected}
                 <a
                     href="/new"
-                    class="bg-purple-400 text-whit sm:px-2 sm:py-2 rounded-full font-semibold hover:bg-purple-500 transition-colors duration-200 shadow-md">
+                    class="bg-purple-400 text-whit lg:px-4 py-2 sm:px-2 sm:py-2 rounded-full font-semibold hover:bg-purple-500 transition-colors duration-200 shadow-md">
                     Create Article
                 </a>
                 <LogoutBtn />
