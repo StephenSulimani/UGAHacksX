@@ -50,8 +50,6 @@
 
         const data = await resp.json();
 
-        console.log(data);
-
         message = data.message.cid;
 
         showModal = true;

@@ -10,11 +10,6 @@
 
     const full_articles = data.full_articles;
 
-    console.log()
-
-    onMount(() => {
-        console.log(full_articles)
-    })
 </script>
 
 <Header />

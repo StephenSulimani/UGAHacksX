@@ -88,8 +88,7 @@ export async function POST(event: RequestEvent): Promise<Response> {
         return json(resp, {
             status: 500,
         });
-    } catch (e) {
-        console.log(e);
+    } catch {
         const resp: APIResponse<string> = {
             success: 0,
             error: 1,

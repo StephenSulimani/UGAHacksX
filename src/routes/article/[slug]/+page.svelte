@@ -1,5 +1,4 @@
 <script lang="ts">
-    import DOMPurify from "dompurify";
     import type { PageProps } from "./$types";
     let { data }: PageProps = $props();
     import { isConnected, userAddress } from "$lib/stores/authStore";
@@ -25,7 +24,7 @@
 
     let title = $state(article.title);
     let description = $state(article.blurb);
-    let content = $state(DOMPurify.sanitize(article.text));
+    let content = $state(article.text);
 
     let contentElement: HTMLTextAreaElement | undefined = $state();
 
@@ -47,6 +46,7 @@
                 title: title,
                 blurb: description,
                 text: content,
+                category: article.category,
             }),
         });
 
@@ -139,8 +139,7 @@
                     <button
                         onclick={() => {
                             invalidateAll();
-                            goto(`/article/${article.prevCID}`);
-                            //                            window.location = `/article/${article.prevCID}`;
+                            window.location = `/article/${article.prevCID}`;
                         }}
                         class="flex items-center bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-400 transition duration-300"
                     >
@@ -165,8 +164,8 @@
                     <!-- Next button -->
                     <button
                         onclick={() => {
-                            window.location = `/article/${article.nextCID}`;
                             invalidateAll();
+                            window.location = `/article/${article.nextCID}`;
                         }}
                         class="flex items-center bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-400 transition duration-300"
                     >

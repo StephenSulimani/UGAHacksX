@@ -55,7 +55,6 @@
             });
 
             const data = await response.json();
-            console.log("Login response:", data);
             isConnected.set(response.status == 200);
         }
     }
