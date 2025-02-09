@@ -12,6 +12,7 @@
     const cid = data.full_article.cid;
 
     let editing = $state(false);
+    let copied = $state(false);
     /*
     onMount(async () => {
         await VerifyAuth();
@@ -34,6 +35,7 @@
 
     function closeModal() {
         showModal = false;
+        goto(`/article/${message}`);
     }
 
     async function createArticle() {
@@ -98,6 +100,7 @@
 
     function copyToClipboard() {
         navigator.clipboard.writeText(message);
+        copied = true;
     }
 
     function edit() {
@@ -106,6 +109,14 @@
 </script>
 
 <Header />
+{#if copied}
+    <div
+        class="fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-purple-500 text-white px-6 py-3 rounded-md shadow-lg"
+    >
+        CID copied to clipboard!
+    </div>
+{/if}
+
 {#if article}
     {#if !editing}
         <div class="max-w-screen mx-auto p-6 bg-white rounded-lg shadow-lg">
@@ -215,7 +226,7 @@
                         onclick={closeModal}
                         class="mt-4 px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-700 w-full"
                     >
-                        Dismiss
+                        View Article
                     </button>
                 </div>
             </div>
