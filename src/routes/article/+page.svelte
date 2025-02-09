@@ -31,6 +31,7 @@
     <ReadMoreButton 
         title={article.title} 
         author={article.author} 
+        category={article.category}
         date={article.date} 
         text={article.text} 
     />

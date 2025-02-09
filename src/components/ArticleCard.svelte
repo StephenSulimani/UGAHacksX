@@ -1,7 +1,6 @@
 <script>
     import Header from "./Header.svelte";
     import { ThumbsUp, ThumbsDown, Newspaper } from "lucide-svelte";
-    //import { ReadMoreButton } from "./ReadMoreButton.svelte";
   
     export let cid;
     export let title;
@@ -14,17 +13,9 @@
     
     let userVote = 0;
 
-    // function upvote() {
-    //   voteCount += 1;
-    // }
-    
-    // function downvote() {
-    //   voteCount -= 1;
-    // }
-
     async function vote(voteValue) {
         try {
-            const response = await fetch(`../route/api/vote/${cid}`, {
+            const response = await fetch(`/api/vote/${cid}`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -38,8 +29,8 @@
             const data = await response.json();
             if (data.success) {
                 if (userVote === voteValue) {
-                    userVote = 0;
                     voteCount -= voteValue;
+                    userVote = 0;
                 } else {
                     voteCount += voteValue - userVote;
                     userVote = voteValue;
@@ -52,9 +43,9 @@
 </script>
   
 <div class="relative bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden max-w-sm flex flex-col">
-    <div class="p-6 flex flex-col flex-grow">
+    <div class="p-6">
         <!-- Category tag -->
-        <span class="inline-flex px-3 py-1 text-xs font-medium bg-purple-100 text-purple-600 rounded-full mb-4 w-auto">
+        <span class="inline-block px-3 py-1 text-xs font-medium bg-purple-100 text-purple-600 rounded-full mb-4 w-auto">
             {category}
         </span>
 
@@ -64,7 +55,7 @@
         </h2>
 
         <!-- Blurb -->
-        <p class="flex-grow text-gray-600 text-sm mb-4 line-clamp-3">
+        <p class="text-gray-600 text-sm mb-4 line-clamp-3">
             {blurb}
         </p>
 
@@ -94,7 +85,7 @@
             </div>
         </div>
 
-        <div class="flex items-center justify-between gap-4 mt-auto">
+        <div class=" flex items-center justify-between gap-4 mt-auto">
             <div class="flex items-center gap-2 bg-gray-100 rounded-lg px-3 py-1">
                 <button 
                     class="p-1 hover:bg-gray-200 rounded-full transition-colors"

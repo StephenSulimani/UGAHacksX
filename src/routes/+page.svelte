@@ -23,6 +23,7 @@
         <ArticleCard
             cid={article.cid}
             title={article.article.title}
+            category={article.article.category}
             blurb={article.article.blurb}
             author={article.article.author}
         />
