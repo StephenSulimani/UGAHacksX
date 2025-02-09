@@ -1,25 +1,29 @@
 <script lang="ts">
+    import { onMount } from "svelte";
     import Header from "./Header.svelte";
     import { ThumbsUp, ThumbsDown, Newspaper } from "lucide-svelte";
-  
-    export let cid;
-    export let title;
-    export let blurb;
-    export let author;
-    export let date = new Date().toISOString();
-    export let category;
-    
-    let voteCount = 0;
-    let userVote = 0;
+    let { cid, title, blurb, author, category } = $props();
+
+    let date = new Date().toISOString();
+
+    let voteCount = $state(0);
+    let userVote = $state(0);
+
+    onMount(async () => {
+        await fetchVoteCount();
+    });
 
     async function fetchVoteCount() {
         try {
-            const response = await fetch(`/api/vote/${cid}`)
-            data = await response.json();
+            const response = await fetch(`/api/vote/${cid}`, {
+                method: "GET",
+                credentials: "include",
+            });
+            const data = await response.json();
 
-            if (data.success) {
-                voteCount = data.voteCount;
-                userVote = data.userVote;
+            if (response.status == 200) {
+                voteCount = data.message.score;
+                userVote = data.message.userVote;
             }
         } catch (error) {
             console.error(error);
@@ -27,7 +31,7 @@
     }
     async function vote(voteValue) {
         try {
-            const response = await fetch(`/api/vote/${cid}`, {
+            const response = await fetch(`/api/vote`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -39,12 +43,13 @@
             });
 
             const data = await response.json();
-            if (data.success) {
+            if (response.status == 200) {
                 if (userVote === voteValue) {
-                    data.voteCount = data.newVoteCount;
-                    userVote = userVote === voteValue ? 0 : voteValue;
+                    userVote = data.message.userVote;
+                    voteCount = data.message.score;
                 }
             }
+            await fetchVoteCount();
         } catch (error) {
             console.error(error);
         }
@@ -52,16 +57,22 @@
         fetchVoteCount();
     }
 </script>
-  
-<div class="relative bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden max-w-sm flex flex-col">
+
+<div
+    class="relative bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden max-w-sm flex flex-col"
+>
     <div class="p-6">
         <!-- Category tag -->
-        <span class="inline-block px-3 py-1 text-xs font-medium bg-purple-100 text-purple-600 rounded-full mb-4 w-auto">
+        <span
+            class="inline-block px-3 py-1 text-xs font-medium bg-purple-100 text-purple-600 rounded-full mb-4 w-auto"
+        >
             {category}
         </span>
 
         <!-- Title -->
-        <h2 class="text-xl font-bold text-gray-900  mb-3 line-clamp-2 hover:text-purple-600 transition-colors">
+        <h2
+            class="text-xl font-bold text-gray-900 mb-3 line-clamp-2 hover:text-purple-600 transition-colors"
+        >
             {title}
         </h2>
 
@@ -71,7 +82,7 @@
         </p>
 
         <!-- Author and date section -->
-        <div class="flex-grow ">
+        <div class="flex-grow">
             <!-- Author info -->
             <div class="flex-1">
                 <div class="relative group">
@@ -91,32 +102,41 @@
                     </div>
                 </div>
                 <div class="text-xs text-gray-500">
-                    {new Date(date).toLocaleDateString()}
+                    {new Date(date).toLocaleDateString()}}
                 </div>
             </div>
         </div>
 
         <div class=" flex items-center justify-between gap-4 mt-auto">
-            <div class="flex items-center gap-2 bg-gray-100 rounded-lg px-3 py-1">
-                <button 
+            <div
+                class="flex items-center gap-2 bg-gray-100 rounded-lg px-3 py-1"
+            >
+                <button
                     class="p-1 hover:bg-gray-200 rounded-full transition-colors"
-                    on:click={() => vote(1)} class={userVote === 1 ? "active" : ""}
+                    onclick={() => vote(1)}
+                    disabled={userVote === 1}
                 >
                     <ThumbsUp class="h-4 w-4 text-gray-600 " />
                 </button>
-                <span class="text-sm font-medium text-gray-600 min-w-[2rem] text-center">
-                    {voteCount}
+                <span
+                    class="text-sm font-medium text-gray-600 min-w-[2rem] text-center"
+                >
+                    {voteCount} votes
                 </span>
-                <button 
+                <button
                     class="p-1 hover:bg-gray-200-gray-600 rounded-full transition-colors"
-                    on:click={() => vote(-1)} class={userVote === -1 ? "active" : ""}
+                    onclick={() => vote(-1)}
+                    disabled={userVote === -1}
                 >
                     <ThumbsDown class="h-4 w-4 text-gray-600" />
                 </button>
             </div>
-                      
-            <a href={`/article/${cid}`} class="inline-flex items-center justify-center w-full px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors duration-300 group">
-                    Read More
+
+            <a
+                href={`/article/${cid}`}
+                class="inline-flex items-center justify-center w-full px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors duration-300 group"
+            >
+                Read More
                 <svg
                     class="w-4 h-4 ml-2 transform group-hover:translate-x-1 transition-transform duration-300"
                     fill="none"
