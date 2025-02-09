@@ -5,56 +5,17 @@ import { prisma } from "$lib/db";
 import { isArticle } from "$lib/article";
 import { gzip } from "node-gzip";
 import { PINATA } from "$lib/pinata";
+import { VerifyCookie } from "$lib/helpers/verifyCookie";
 
 export async function POST(event: RequestEvent): Promise<Response> {
     const { request, cookies } = event;
 
     const data = await request.json();
 
-    const authCookie = cookies.get("authToken");
+    const user = await VerifyCookie(cookies);
 
-    if (!authCookie) {
-        const resp: APIResponse<string> = {
-            success: 0,
-            error: 1,
-            message: "authToken missing!",
-        };
-        return json(resp, {
-            status: 400,
-        });
-    }
-
-    const verification = await verifyJWT(authCookie);
-
-    if (!verification) {
-        const resp: APIResponse<string> = {
-            success: 0,
-            error: 1,
-            message: "Invalid authToken!",
-        };
-        return json(resp, {
-            status: 400,
-        });
-    }
-
-    const user = await prisma.user.findFirst({
-        where: {
-            address: {
-                equals: verification.address,
-                mode: "insensitive",
-            },
-        },
-    });
-
-    if (user == null) {
-        const resp: APIResponse<string> = {
-            success: 0,
-            error: 1,
-            message: "Invalid authToken!",
-        };
-        return json(resp, {
-            status: 400,
-        });
+    if (user instanceof Response) {
+        return user;
     }
 
     if (!isArticle(data)) {
@@ -85,7 +46,7 @@ export async function POST(event: RequestEvent): Promise<Response> {
         });
     }
 
-    data.author = verification.address;
+    data.author = user.address;
     data.date = new Date().toISOString();
 
     const data_str = JSON.stringify(data);

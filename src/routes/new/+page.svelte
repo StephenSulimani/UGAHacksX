@@ -138,38 +138,39 @@
                 Create New Article
             </h1>
 
-        <form class="space-y-6">
-            <!-- Title Input -->
-            <div>
-                <label
-                    for="title"
-                    class="block text-lg font-medium text-gray-700"
-                    >Title:</label
-                >
-                <input
-                    type="text"
-                    id="title"
-                    bind:value={title}
-                    class="mt-2 block w-full px-5 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                    placeholder="Enter article title"
-                />
-            </div>
+            <form class="space-y-6">
+                <!-- Title Input -->
+                <div>
+                    <label
+                        for="title"
+                        class="block text-lg font-medium text-gray-700"
+                        >Title:</label
+                    >
+                    <input
+                        type="text"
+                        id="title"
+                        bind:value={title}
+                        class="mt-2 block w-full px-5 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                        placeholder="Enter article title"
+                    />
+                </div>
 
-            <!-- Category Input -->
-            <div>
-                <label
-                    for="category"
-                    class="block text-lg font-medium text-gray-700"
-                    >Category:</label
-                >
-                <input
-                    type="text"
-                    id="category"
-                    bind:value={category}
-                    class="mt-2 block w-full px-5 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                    placeholder="Enter article category"
-                />
-            </div>
+                <!-- Category Input -->
+                <div>
+                    <label
+                        for="category"
+                        class="block text-lg font-medium text-gray-700"
+                        >Category:</label
+                    >
+                    <select
+                        bind:value={category}
+                        class="mt-2 block w-full px-5 py-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                    >
+                        {#each categories as cat}
+                            <option value={cat}>{cat}</option>
+                        {/each}
+                    </select>
+                </div>
 
                 <!-- Description Input -->
                 <div>

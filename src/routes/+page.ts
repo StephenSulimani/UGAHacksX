@@ -11,6 +11,8 @@ export const load = async (event: RequestEvent) => {
 
     const j_data = await resp.json();
 
+    console.log(j_data)
+
     const article_cids = j_data.message.articles as string[];
 
     const articles: FullArticle[] = [];

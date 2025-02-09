@@ -24,7 +24,8 @@ export async function GET(): Promise<Response> {
         return json(resp, {
             status: 200,
         });
-    } catch {
+    } catch (e){
+        console.log(e)
         const resp: APIResponse<string> = {
             success: 0,
             error: 1,
