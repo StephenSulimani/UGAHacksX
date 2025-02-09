@@ -2,7 +2,6 @@ import { isArticle } from "$lib/article";
 import { prisma } from "$lib/db";
 import { RetrieveArticle } from "$lib/helpers/fileRetrieval";
 import { VerifyCookie } from "$lib/helpers/verifyCookie";
-import { verifyJWT } from "$lib/jwt";
 import { PINATA } from "$lib/pinata";
 import type { APIResponse } from "$lib/responses";
 import { json, type RequestEvent } from "@sveltejs/kit";
