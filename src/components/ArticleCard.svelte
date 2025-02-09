@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import Header from "./Header.svelte";
     import { ThumbsUp, ThumbsDown, Newspaper } from "lucide-svelte";
   
@@ -9,10 +9,22 @@
     export let date = new Date().toISOString();
     export let category;
     
-    export let voteCount = 0;
-    
+    let voteCount = 0;
     let userVote = 0;
 
+    async function fetchVoteCount() {
+        try {
+            const response = await fetch(`/api/vote/${cid}`)
+            data = await response.json();
+
+            if (data.success) {
+                voteCount = data.voteCount;
+                userVote = data.userVote;
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    }
     async function vote(voteValue) {
         try {
             const response = await fetch(`/api/vote/${cid}`, {
@@ -29,16 +41,15 @@
             const data = await response.json();
             if (data.success) {
                 if (userVote === voteValue) {
-                    voteCount -= voteValue;
-                    userVote = 0;
-                } else {
-                    voteCount += voteValue - userVote;
-                    userVote = voteValue;
+                    data.voteCount = data.newVoteCount;
+                    userVote = userVote === voteValue ? 0 : voteValue;
                 }
             }
         } catch (error) {
             console.error(error);
         }
+
+        fetchVoteCount();
     }
 </script>
   
@@ -89,7 +100,7 @@
             <div class="flex items-center gap-2 bg-gray-100 rounded-lg px-3 py-1">
                 <button 
                     class="p-1 hover:bg-gray-200 rounded-full transition-colors"
-                    on:click={() => vote(1)}
+                    on:click={() => vote(1)} class={userVote === 1 ? "active" : ""}
                 >
                     <ThumbsUp class="h-4 w-4 text-gray-600 " />
                 </button>
@@ -98,7 +109,7 @@
                 </span>
                 <button 
                     class="p-1 hover:bg-gray-200-gray-600 rounded-full transition-colors"
-                    on:click={() => vote(-1)}
+                    on:click={() => vote(-1)} class={userVote === -1 ? "active" : ""}
                 >
                     <ThumbsDown class="h-4 w-4 text-gray-600" />
                 </button>
